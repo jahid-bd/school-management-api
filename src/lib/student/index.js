@@ -53,13 +53,22 @@ const findAllStudentService = async ({
   };
 
   return Student.find(filter)
-    .populate()
+    .populate({ path: 'class_id', select: 'name' })
     .sort(sortStr)
     .skip(page * limit - limit)
     .limit(limit);
 };
 
+const studentCountService = ({ search }) => {
+  const fileter = {
+    name: { $regex: search, $options: 'i' },
+  };
+
+  return Student.count(fileter);
+};
+
 module.exports = {
   createStudentService,
   findAllStudentService,
+  studentCountService,
 };
