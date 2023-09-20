@@ -1,13 +1,12 @@
-const { Student } = require('../../model');
+const { Student, Teacher } = require('../../model');
 const { notFoundError } = require('../../utils/error');
 
-const createStudentService = async ({
+const createTeacherService = async ({
   name,
   bio,
   photo,
   user_id,
   class_id,
-  class_roll,
   father_name,
   mother_name,
   address,
@@ -15,20 +14,20 @@ const createStudentService = async ({
   religion,
   birth,
   gender,
+  joining_date,
 }) => {
-  if ((!name, !user_id, !class_id, !class_roll, !gender, !birth)) {
+  if ((!name, !user_id, !class_id, !gender, !birth)) {
     const error = new Error('Invalid Paramiters!');
     error.status = 401;
     throw error;
   }
 
-  const student = new Student({
+  const teacher = new Teacher({
     name,
     bio,
     photo,
     user_id,
     class_id,
-    class_roll,
     father_name,
     mother_name,
     address,
@@ -36,12 +35,13 @@ const createStudentService = async ({
     religion,
     birth,
     gender,
+    joining_date,
   });
 
-  return await student.save();
+  return await teacher.save();
 };
 
-const findAllStudentService = async ({
+const findAllTeacherService = async ({
   page,
   limit,
   sortType,
@@ -53,7 +53,7 @@ const findAllStudentService = async ({
     name: { $regex: search, $options: 'i' },
   };
 
-  return Student.find(filter)
+  return Teacher.find(filter)
     .populate({ path: 'class_id', select: 'name' })
     .populate({ path: 'user_id', select: '_id', select: 'email' })
     .sort(sortStr)
@@ -71,24 +71,24 @@ const removeStudentService = async ({ id }) => {
   return Student.findByIdAndDelete(id);
 };
 
-const studentCountService = ({ search }) => {
+const teacherCountService = ({ search }) => {
   const fileter = {
     name: { $regex: search, $options: 'i' },
   };
 
-  return Student.count(fileter);
+  return Teacher.count(fileter);
 };
 
-const findSingleStudentService = async ({ id }) => {
-  const student = await Student.findById(id)
+const findSingleTeacherService = async ({ id }) => {
+  const teacher = await Teacher.findById(id)
     .populate({ path: 'user_id' })
     .populate({ path: 'class_id' });
 
-  if (!student) {
+  if (!teacher) {
     throw notFoundError();
   }
 
-  return student._doc;
+  return teacher._doc;
 };
 
 const updateStudentPatchService = async (
@@ -106,7 +106,6 @@ const updateStudentPatchService = async (
     religion,
     birth,
     gender,
-    enrollment_status,
   }
 ) => {
   const student = await Student.findById(id);
@@ -128,7 +127,6 @@ const updateStudentPatchService = async (
     religion,
     birth,
     gender,
-    enrollment_status,
   };
 
   Object.keys(payload).forEach((key) => {
@@ -140,7 +138,7 @@ const updateStudentPatchService = async (
   return student._doc;
 };
 
-const updateOrCreateStudentService = async (
+const updateOrCreateTeacherService = async (
   id,
   {
     name,
@@ -148,7 +146,6 @@ const updateOrCreateStudentService = async (
     photo,
     user_id,
     class_id,
-    class_roll,
     father_name,
     mother_name,
     address,
@@ -156,18 +153,18 @@ const updateOrCreateStudentService = async (
     religion,
     birth,
     gender,
+    joining_date,
   }
 ) => {
-  const student = await Student.findById(id);
+  const teacher = await Teacher.findById(id);
 
-  if (!student) {
-    const student = await createStudentService({
+  if (!teacher) {
+    const teacher = await createTeacherService({
       name,
       bio,
       photo,
       user_id,
       class_id,
-      class_roll,
       father_name,
       mother_name,
       address,
@@ -175,10 +172,11 @@ const updateOrCreateStudentService = async (
       religion,
       birth,
       gender,
+      joining_date,
     });
 
     return {
-      student,
+      teacher,
       code: 201,
     };
   }
@@ -189,7 +187,6 @@ const updateOrCreateStudentService = async (
     photo,
     user_id,
     class_id,
-    class_roll,
     father_name,
     mother_name,
     address,
@@ -197,23 +194,22 @@ const updateOrCreateStudentService = async (
     religion,
     birth,
     gender,
+    joining_date,
   };
 
-  student.overwrite(payload);
-  await student.save();
+  teacher.overwrite(payload);
+  await teacher.save();
 
   return {
-    student: { ...student._doc },
+    teacher: { ...teacher._doc },
     code: 200,
   };
 };
 
 module.exports = {
-  createStudentService,
-  findAllStudentService,
-  studentCountService,
-  removeStudentService,
-  findSingleStudentService,
-  updateStudentPatchService,
-  updateOrCreateStudentService,
+  createTeacherService,
+  findAllTeacherService,
+  teacherCountService,
+  findSingleTeacherService,
+  updateOrCreateTeacherService,
 };

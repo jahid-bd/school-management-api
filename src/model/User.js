@@ -16,10 +16,7 @@ const userSchema = new Schema(
       default: 'pending',
     },
   },
-  {
-    timeseries: true,
-    id: true,
-  }
+  { timestamps: true, id: true }
 );
 
 const User = model('User', userSchema);

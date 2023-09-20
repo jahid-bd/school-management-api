@@ -17,10 +17,7 @@ const attendanceSchema = new Schema(
       ref: 'Student',
     },
   },
-  {
-    timeseries: true,
-    id: true,
-  }
+  { timestamps: true, id: true }
 );
 
 const Attendance = model('Attendance', attendanceSchema);

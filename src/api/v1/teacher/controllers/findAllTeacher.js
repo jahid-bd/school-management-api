@@ -1,10 +1,10 @@
 const {
-  findAllStudentService,
-  studentCountService,
-} = require('../../../../lib/student');
+  findAllTeacherService,
+  teacherCountService,
+} = require('../../../../lib/Teacher');
 const query = require('../../../../utils/query');
 
-const findAllStudent = async (req, res, next) => {
+const findAllTeacher = async (req, res, next) => {
   const page = req.query.page || 1;
   const limit = req.query.limit || 10;
   const sortType = req.query.sort_type || 'dsc';
@@ -13,7 +13,7 @@ const findAllStudent = async (req, res, next) => {
 
   try {
     // find
-    const students = await findAllStudentService({
+    const teachers = await findAllTeacherService({
       page,
       limit,
       sortType,
@@ -23,23 +23,22 @@ const findAllStudent = async (req, res, next) => {
 
     // data transformation
     const data = query.getTransformedItems({
-      items: students,
-      path: '/students',
+      items: teachers,
+      path: '/teachers',
       selection: [
         '_id',
         'name',
         'photo',
         'user_id',
         'class_id',
-        'class_roll',
+        'joining_date',
         'createdAt',
         'updatedAt',
       ],
     });
 
     // pagination
-    const totalItems = await studentCountService({ search });
-    console.log(totalItems);
+    const totalItems = await teacherCountService({ search });
     const pagination = query.getPagination({ limit, page, totalItems });
 
     // HEATOAS links
@@ -58,4 +57,4 @@ const findAllStudent = async (req, res, next) => {
   }
 };
 
-module.exports = findAllStudent;
+module.exports = findAllTeacher;

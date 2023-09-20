@@ -16,6 +16,7 @@ const studentSchema = new Schema(
     enrollment_status: {
       type: String,
       enum: ['active', 'inactive', 'graduated'],
+      default: 'active',
     },
     gender: {
       type: String,
@@ -29,10 +30,7 @@ const studentSchema = new Schema(
     address: String,
     phone: String,
   },
-  {
-    timeseries: true,
-    id: true,
-  }
+  { timestamps: true, id: true }
 );
 
 const Student = model('Student', studentSchema);

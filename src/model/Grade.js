@@ -24,10 +24,7 @@ const gradeSchema = new Schema(
       ref: 'Course',
     },
   },
-  {
-    timeseries: true,
-    id: true,
-  }
+  { timestamps: true, id: true }
 );
 
 const Grade = model('Grade', gradeSchema);

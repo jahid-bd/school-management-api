@@ -13,10 +13,7 @@ const courseSchema = new Schema(
       ref: 'Class',
     },
   },
-  {
-    timeseries: true,
-    id: true,
-  }
+  { timestamps: true, id: true }
 );
 
 const Course = model('Course', courseSchema);

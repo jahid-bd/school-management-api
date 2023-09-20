@@ -16,6 +16,7 @@ const teacherSchema = new Schema(
     enrollment_status: {
       type: String,
       enum: ['active', 'inactive', 'retired'],
+      default: 'active',
     },
     gender: {
       type: String,
@@ -30,10 +31,7 @@ const teacherSchema = new Schema(
     address: String,
     phone: String,
   },
-  {
-    timeseries: true,
-    id: true,
-  }
+  { timestamps: true, id: true }
 );
 
 const Teacher = model('Teacher', teacherSchema);
