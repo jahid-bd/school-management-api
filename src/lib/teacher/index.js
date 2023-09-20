@@ -61,14 +61,14 @@ const findAllTeacherService = async ({
     .limit(limit);
 };
 
-const removeStudentService = async ({ id }) => {
-  const student = await Student.findById(id);
+const removeTeacherService = async ({ id }) => {
+  const teacher = await Teacher.findById(id);
 
-  if (!student) {
+  if (!teacher) {
     throw notFoundError();
   }
 
-  return Student.findByIdAndDelete(id);
+  return Teacher.findByIdAndDelete(id);
 };
 
 const teacherCountService = ({ search }) => {
@@ -91,14 +91,13 @@ const findSingleTeacherService = async ({ id }) => {
   return teacher._doc;
 };
 
-const updateStudentPatchService = async (
+const updateTeacherPatchService = async (
   id,
   {
     name,
     bio,
     photo,
     class_id,
-    class_roll,
     father_name,
     mother_name,
     address,
@@ -106,11 +105,13 @@ const updateStudentPatchService = async (
     religion,
     birth,
     gender,
+    joining_date,
+    enrollment_status,
   }
 ) => {
-  const student = await Student.findById(id);
+  const teacher = await Teacher.findById(id);
 
-  if (!student) {
+  if (!teacher) {
     throw notFoundError();
   }
 
@@ -119,7 +120,6 @@ const updateStudentPatchService = async (
     bio,
     photo,
     class_id,
-    class_roll,
     father_name,
     mother_name,
     address,
@@ -127,15 +127,17 @@ const updateStudentPatchService = async (
     religion,
     birth,
     gender,
+    joining_date,
+    enrollment_status,
   };
 
   Object.keys(payload).forEach((key) => {
-    student[key] = payload[key] ?? student[key];
+    teacher[key] = payload[key] ?? teacher[key];
   });
 
-  await student.save();
+  await teacher.save();
 
-  return student._doc;
+  return teacher._doc;
 };
 
 const updateOrCreateTeacherService = async (
@@ -212,4 +214,6 @@ module.exports = {
   teacherCountService,
   findSingleTeacherService,
   updateOrCreateTeacherService,
+  updateTeacherPatchService,
+  removeTeacherService,
 };

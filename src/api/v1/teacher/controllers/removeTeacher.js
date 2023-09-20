@@ -1,11 +1,11 @@
-const { removeStudentService } = require('../../../../lib/student');
+const { removeTeacherService } = require('../../../../lib/teacher');
 
 const removeTeacher = async (req, res, next) => {
   const id = req.params.id;
 
   try {
-    await removeStudentService({ id });
-    res.status(204).end();
+    await removeTeacherService({ id });
+    res.status(204).json({ message: 'Teacher deleted successfully' });
   } catch (err) {
     next(err);
   }

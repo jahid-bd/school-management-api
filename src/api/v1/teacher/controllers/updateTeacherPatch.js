@@ -1,15 +1,15 @@
-const { updateStudentPatchService } = require('../../../../lib/student');
+const { updateTeacherPatchService } = require('../../../../lib/teacher');
 
 const updateTeacherPatch = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const student = await updateStudentPatchService(id, req.body);
+    const teacher = await updateTeacherPatchService(id, req.body);
 
     const response = {
       code: 200,
-      message: 'Student updated successfully',
-      data: { ...student },
+      message: 'Teacher updated successfully',
+      data: { ...teacher },
       links: {
         self: req.path,
       },

@@ -5,7 +5,7 @@ const removeStudent = async (req, res, next) => {
 
   try {
     await removeStudentService({ id });
-    res.status(204).end();
+    res.status(204).json({ message: 'Student deleted successfully' });
   } catch (err) {
     next(err);
   }

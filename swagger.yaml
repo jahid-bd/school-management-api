@@ -267,7 +267,7 @@ paths:
         - $ref: '#/components/parameters/searchParam'
       responses:
         '200':
-          description: Return a list of articles
+          description: Return a list of students
           content:
             'application/json':
               schema:
@@ -447,7 +447,7 @@ paths:
       security:
         - bearerAuth: []
       tags: [Student]
-      description: Create or update entire article
+      description: Create or update entire student
       parameters:
         - $ref: '#/components/parameters/idPathParam'
       requestBody:
@@ -589,7 +589,7 @@ paths:
         - $ref: '#/components/parameters/idPathParam'
       responses:
         '204':
-          description: 'Article deleted successfully'
+          description: 'Student deleted successfully'
         '401':
           $ref: '#/components/responses/401'
         '404':
@@ -948,15 +948,14 @@ paths:
                 birth:
                   type: string
                   format: date
-                  example: 01/01/2002
+                  example: 2002-05-14
                 gender:
                   type: string
                   enum:
                     - male
                     - female
                     - other
-              required:
-                - name
+
       responses:
         '200':
           description: 'Successfully Updated'
@@ -1791,7 +1790,7 @@ components:
               example: Shakib
             bio:
               type: string
-              example: article title
+              example: student bio
             photo:
               type: string
               format: url
@@ -1925,7 +1924,7 @@ components:
               example: Shakib
             bio:
               type: string
-              example: article title
+              example: Teacher bio
             photo:
               type: string
               format: url

@@ -29,6 +29,8 @@ router
 router
   .route('/api/v1/teachers/:id')
   .get(teacherControllers.findSingleTeacher)
-  .put(teacherControllers.updateTeacher);
+  .put(teacherControllers.updateTeacher)
+  .patch(teacherControllers.updateTeacherPatch)
+  .delete(teacherControllers.removeTeacher);
 
 module.exports = router;
