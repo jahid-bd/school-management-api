@@ -1,4 +1,5 @@
 const createAttendance = require('./createAttendance');
+const findAllAttendance = require('./findAllAttendance');
 const findSingleAttendance = require('./findSingleAttendance');
 const removeAttendance = require('./removeAttendance');
 const updateAttendance = require('./updateAttendance');
@@ -8,4 +9,5 @@ module.exports = {
   removeAttendance,
   updateAttendance,
   findSingleAttendance,
+  findAllAttendance,
 };

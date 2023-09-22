@@ -26,6 +26,9 @@ const createAttendanceService = async ({
 };
 
 const findAllAttendanceService = async ({
+  class_id,
+  student_id,
+  date,
   page,
   limit,
   sortType,
@@ -35,11 +38,14 @@ const findAllAttendanceService = async ({
   const sortStr = `${sortType === 'dsc' ? '-' : ''}${sortBy}`;
   const filter = {
     name: { $regex: search, $options: 'i' },
+    class_id: { _id: class_id },
+    student_id: { _id: student_id },
+    date,
   };
 
-  return Student.find(filter)
-    .populate({ path: 'class_id', select: 'name' })
-    .populate({ path: 'user_id', select: '_id', select: 'email' })
+  return Attendance.find(filter)
+    .populate({ path: 'class_id', select: '_id', select: 'name' })
+    .populate({ path: 'student_id', select: '_id', select: 'name' })
     .sort(sortStr)
     .skip(page * limit - limit)
     .limit(limit);
@@ -55,7 +61,7 @@ const removeAttendanceService = async ({ id }) => {
   return Attendance.findByIdAndDelete(id);
 };
 
-const AttendanceCountService = ({ search }) => {
+const attendanceCountService = ({ search }) => {
   const fileter = {
     name: { $regex: search, $options: 'i' },
   };
@@ -175,4 +181,6 @@ module.exports = {
   updateAttendanceService,
   createAttendanceService,
   removeAttendanceService,
+  findAllAttendanceService,
+  attendanceCountService,
 };

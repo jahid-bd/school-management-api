@@ -1,22 +1,35 @@
 const {
-  findAllStudentService,
-  studentCountService,
-} = require('../../../../lib/student');
+  findAllAttendanceService,
+  attendanceCountService,
+} = require('../../../../lib/attendance');
+
 const query = require('../../../../utils/query');
 
 const findAllAttendance = async (req, res, next) => {
-  const { class_id, student_id, date } = req.query;
+  const page = req.query.page || 1;
+  const limit = req.query.limit || 10;
+  const sortType = req.query.sort_type || 'dsc';
+  const sortBy = req.query.sort_by || 'updatedAt';
+  const search = req.query.search || '';
+  const class_id = req.query.class_id || '';
+  const student_id = req.query.student_id || '';
+  const date = req.query.date || '';
 
   try {
     // find
-    const attendance = await findAllAttendanceService({
+    const data = await findAllAttendanceService({
       class_id,
       student_id,
       date,
+      page,
+      limit,
+      sortType,
+      sortBy,
+      search,
     });
 
     // pagination
-    const totalItems = await studentCountService({ search });
+    const totalItems = await attendanceCountService({ search });
     const pagination = query.getPagination({ limit, page, totalItems });
 
     // HEATOAS links

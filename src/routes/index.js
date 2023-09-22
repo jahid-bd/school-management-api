@@ -58,7 +58,7 @@ router
 
 router
   .route('/api/v1/attendance')
-  .get()
+  .get(attendanceControllers.findAllAttendance)
   .post(attendanceControllers.createAttendance);
 
 router
