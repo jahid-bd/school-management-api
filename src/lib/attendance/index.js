@@ -36,12 +36,21 @@ const findAllAttendanceService = async ({
   search,
 }) => {
   const sortStr = `${sortType === 'dsc' ? '-' : ''}${sortBy}`;
-  const filter = {
-    name: { $regex: search, $options: 'i' },
-    class_id: { _id: class_id },
-    student_id: { _id: student_id },
-    date,
-  };
+  const filter = {};
+
+  if (class_id) {
+    filter.class_id = class_id;
+  }
+  if (student_id) {
+    filter.student_id = student_id;
+  }
+  if (date) {
+    filter.date = new Date(date);
+  }
+
+  if (search) {
+    filter.name = { $regex: search, $options: 'i' };
+  }
 
   return Attendance.find(filter)
     .populate({ path: 'class_id', select: '_id', select: 'name' })
