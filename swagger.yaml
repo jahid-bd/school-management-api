@@ -2164,14 +2164,11 @@ components:
       type: object
       properties:
         student_id:
-          type: integer
-          format: int32
+          type: string
         class_id:
-          type: integer
-          format: int32
+          type: string
         course_id:
-          type: integer
-          format: int32
+          type: string
         assessment_type:
           type: string
         assessment_name:

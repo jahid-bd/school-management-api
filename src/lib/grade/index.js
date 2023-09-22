@@ -1,28 +1,44 @@
-const { Attendance } = require('../../model');
+const { Attendance, Grade } = require('../../model');
 const { notFoundError } = require('../../utils/error');
 
-const createAttendanceService = async ({
-  name,
+const createGradeService = async ({
+  assessment_name,
+  assessment_type,
   class_id,
   student_id,
-  date,
-  status,
+  course_id,
+  score,
+  max_score,
+  grade_date,
 }) => {
-  if (!name || !class_id || !student_id || !date || !status) {
+  if (
+    !assessment_name ||
+    !assessment_type ||
+    !class_id ||
+    !student_id ||
+    !class_id ||
+    !course_id ||
+    !score ||
+    !max_score ||
+    !grade_date
+  ) {
     const error = new Error('Invalid Paramiters!');
     error.status = 401;
     throw error;
   }
 
-  const attendance = new Attendance({
-    name,
+  const grade = new Grade({
+    assessment_name,
+    assessment_type,
     class_id,
     student_id,
-    date,
-    status,
+    course_id,
+    score,
+    max_score,
+    grade_date,
   });
 
-  return await attendance.save();
+  return await grade.save();
 };
 
 const findAllAttendanceService = async ({
@@ -118,10 +134,5 @@ const updateAttendanceService = async (
 };
 
 module.exports = {
-  findSingleAttendanceService,
-  updateAttendanceService,
-  createAttendanceService,
-  removeAttendanceService,
-  findAllAttendanceService,
-  attendanceCountService,
+  createGradeService,
 };
