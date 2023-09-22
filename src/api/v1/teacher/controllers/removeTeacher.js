@@ -1,4 +1,4 @@
-const { removeTeacherService } = require('../../../../lib/teacher');
+const { removeTeacherService } = require('../../../../lib/Teacher');
 
 const removeTeacher = async (req, res, next) => {
   const id = req.params.id;

@@ -1,5 +1,8 @@
 const router = require('express').Router();
+const { attendanceControllers } = require('../api/v1/attendance');
 const { controllers: authController } = require('../api/v1/auth');
+const { classControllers } = require('../api/v1/class');
+const { courseControllers } = require('../api/v1/course');
 const { studentControllers } = require('../api/v1/student');
 const { teacherControllers } = require('../api/v1/teacher');
 const authenticate = require('../middleware/authenticate');
@@ -32,5 +35,36 @@ router
   .put(teacherControllers.updateTeacher)
   .patch(teacherControllers.updateTeacherPatch)
   .delete(teacherControllers.removeTeacher);
+
+router
+  .route('/api/v1/classes')
+  .get(classControllers.findAllClass)
+  .post(classControllers.createClass);
+
+router
+  .route('/api/v1/classes/:id')
+  .patch(classControllers.updateClass)
+  .delete(classControllers.removeClass);
+
+router
+  .route('/api/v1/courses')
+  .get(courseControllers.findAllCourse)
+  .post(courseControllers.createCourse);
+
+router
+  .route('/api/v1/courses/:id')
+  .patch(courseControllers.updateCourse)
+  .delete(courseControllers.removeCourse);
+
+router
+  .route('/api/v1/attendance')
+  .get()
+  .post(attendanceControllers.createAttendance);
+
+router
+  .route('/api/v1/attendance/:id')
+  .get(attendanceControllers.findSingleAttendance)
+  .patch(attendanceControllers.updateAttendance)
+  .delete(attendanceControllers.removeAttendance);
 
 module.exports = router;

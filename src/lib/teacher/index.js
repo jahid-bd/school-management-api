@@ -16,7 +16,7 @@ const createTeacherService = async ({
   gender,
   joining_date,
 }) => {
-  if ((!name, !user_id, !class_id, !gender, !birth)) {
+  if (!name || !user_id || !class_id || !gender || !birth) {
     const error = new Error('Invalid Paramiters!');
     error.status = 401;
     throw error;

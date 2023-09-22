@@ -375,8 +375,8 @@ paths:
                   example: Isla
                 birth:
                   type: string
-                  format: date-time
-                  example: 01/01/2002
+                  format: date
+                  example: 2001-01-01
                 gender:
                   type: string
                   enum: ['male', 'female', 'other']
@@ -493,8 +493,8 @@ paths:
                   example: Isla
                 birth:
                   type: string
-                  format: date-time
-                  example: 01/01/2002
+                  format: date
+                  example: 2001-01-01
                 gender:
                   type: string
                   enum: ['male', 'female', 'other']
@@ -561,7 +561,7 @@ paths:
                 birth:
                   type: string
                   format: date
-                  example: 01/01/2002
+                  example: 2001-01-01
                 gender:
                   type: string
                   enum: ['male', 'female', 'other']
@@ -1051,7 +1051,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
   '/classes/{id}':
-    put:
+    patch:
       security:
         - bearerAuth: []
       tags: [Class]
@@ -1130,7 +1130,6 @@ paths:
                         format: url
         '400':
           $ref: '#/components/responses/400'
-
     post:
       security:
         - bearerAuth: []
@@ -1152,24 +1151,24 @@ paths:
         '400':
           $ref: '#/components/responses/400'
   '/courses/{id}':
-    get:
-      security:
-        - bearerAuth: []
-      tags: [Course]
-      description: Get a course by ID
-      parameters:
-        - $ref: '#/components/parameters/idPathParam'
-      responses:
-        '200':
-          description: Successfully retrieved a course
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Course'
-        '404':
-          $ref: '#/components/responses/404'
+    # get:
+    #   security:
+    #     - bearerAuth: []
+    #   tags: [Course]
+    #   description: Get a course by ID
+    #   parameters:
+    #     - $ref: '#/components/parameters/idPathParam'
+    #   responses:
+    #     '200':
+    #       description: Successfully retrieved a course
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/Course'
+    #     '404':
+    #       $ref: '#/components/responses/404'
 
-    put:
+    patch:
       security:
         - bearerAuth: []
       tags: [Course]
@@ -1214,7 +1213,13 @@ paths:
       description: Get Attendance List for a Class on a Date
       parameters:
         - $ref: '#/components/parameters/classIdParam'
+        - $ref: '#/components/parameters/studentIdParam'
         - $ref: '#/components/parameters/dateParam'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/sortTypeParam'
+        - $ref: '#/components/parameters/sortByParam'
+        - $ref: '#/components/parameters/searchParam'
       responses:
         '200':
           description: Success
@@ -1261,7 +1266,7 @@ paths:
                 $ref: '#/components/schemas/Attendance'
         '404':
           $ref: '#/components/responses/404'
-    put:
+    patch:
       security:
         - bearerAuth: []
       tags: [Attendance]
@@ -1447,16 +1452,13 @@ components:
       properties:
         name:
           type: string
+          example: Jahid Hasan
         email:
           type: string
+          example: jahid@gmail.com
         password:
           type: string
-        role:
-          type: string
-          enum: [user, admin, teacher, student]
-        status:
-          type: string
-          enum: [pending, approved, block, decline]
+          example: pass123
       required:
         - name
         - email
@@ -1469,6 +1471,7 @@ components:
       properties:
         message:
           type: string
+          example: 'User created successfully'
         user:
           $ref: '#/components/schemas/User'
         links:
@@ -1556,7 +1559,7 @@ components:
             birth:
               type: string
               format: date
-              example: 01/01/2002
+              example: 2001-01-01
             gender:
               type: string
               enum: ['male', 'female', 'other']
@@ -1636,14 +1639,9 @@ components:
               type: string
               format: text
               example: Description of this course
-            teacher_id:
-              type: integer
-              format: int32
-              example: 33
-            class_id:
-              type: integer
-              format: int32
-              example: 7
+            course_schedule:
+              type: string
+              example: Monday, Wednesday, Friday 9:00 AM - 4:00 PM
     Class:
       type: object
       properties:
@@ -1656,17 +1654,9 @@ components:
         room_number:
           type: string
           example: Room 101
-        course_id:
-          type: integer
-          example: 101
-        teachers:
-          type: array
-          items:
-            type: integer
-            example: 201
         class_schedule:
           type: string
-          example: Monday, Wednesday, Friday 9:00 AM - 11:00 AM
+          example: Monday, Wednesday, Friday 9:00 AM - 4:00 PM
         timestamp:
           $ref: '#/components/schemas/Timestamp'
       required:
@@ -1819,7 +1809,7 @@ components:
             birth:
               type: string
               format: date
-              example: 01/01/2002
+              example: 2001-01-01
             gender:
               type: string
               enum: ['male', 'female', 'other']
@@ -1949,7 +1939,7 @@ components:
             birth:
               type: string
               format: date
-              example: '2002-01-01'
+              example: 2001-01-01
             religion:
               type: string
               example: Islam
@@ -1971,21 +1961,14 @@ components:
         room_number:
           type: string
           example: Room 101
-        course_id:
-          type: integer
-          example: 101
-        teachers:
-          type: array
-          items:
-            type: integer
-            example: 201
         class_schedule:
           type: string
           example: Monday, Wednesday, Friday 9:00 AM - 11:00 AM
       required:
         - name
         - room_number
-        - course_id
+        - class_schedule
+
     ClassCreateResponseDTO:
       type: object
       properties:
@@ -2039,16 +2022,17 @@ components:
       properties:
         name:
           type: string
+          example: English
         description:
           type: string
-        teacher_id:
-          type: integer
-        class_id:
-          type: integer
+          example: course description
+        course_schedule:
+          type: string
+          example: Sunday - 10am - 11am
       required:
         - name
-        - teacher_id
-        - class_id
+        - course_schedule
+
     CourseCreateResponseDTO:
       type: object
       properties:
@@ -2073,10 +2057,8 @@ components:
           type: string
         description:
           type: string
-        teacher_id:
-          type: integer
-        class_id:
-          type: integer
+        course_schedule:
+          type: string
     CourseUpdateResponseDTO:
       type: object
       properties:
@@ -2087,12 +2069,15 @@ components:
     AttendanceCreateDTO:
       type: object
       properties:
+        name:
+          type: string
+          example: Attendance name
         class_id:
-          type: integer
-          format: int32
+          type: string
+          example: 650c637046f01962f5f0dc98
         student_id:
-          type: integer
-          format: int32
+          type: string
+          example: 650c637046f01962f5f0dc98
         date:
           type: string
           format: date
@@ -2100,6 +2085,7 @@ components:
           type: string
           enum: [present, absent, late]
       required:
+        - name
         - class_id
         - student_id
         - date
@@ -2114,12 +2100,15 @@ components:
     AttendanceUpdateDTO:
       type: object
       properties:
+        name:
+          type: string
+          example: Attendance name
         class_id:
-          type: integer
-          format: int32
+          type: string
+          example: 650d325b0a3bff899930e170
         student_id:
-          type: integer
-          format: int32
+          type: string
+          example: 650d325b0a3bff899930e170
         date:
           type: string
           format: date
@@ -2403,8 +2392,8 @@ components:
       description: The unique identifier of the class (relation with class)
       required: false
       schema:
-        type: integer
-        format: int32
+        type: string
+        example: 650d162132bd9a729f4c0043
     dateParam:
       name: date
       in: query
@@ -2419,8 +2408,8 @@ components:
       description: The unique identifier of the course (relation with course)
       required: false
       schema:
-        type: integer
-        format: int32
+        type: string
+        example: 650d162132bd9a729f4c0043
     scoreParam:
       name: score
       in: query
@@ -2435,8 +2424,8 @@ components:
       description: The unique identifier of the student (relation with student)
       required: false
       schema:
-        type: integer
-        format: int32
+        type: string
+        example: 650d162132bd9a729f4c0043
     assessmentTypeParam:
       name: assessment_type
       in: query

@@ -1,47 +1,31 @@
-const { Student } = require('../../model');
+const { Student, Attendance } = require('../../model');
 const { notFoundError } = require('../../utils/error');
 
-const createStudentService = async ({
+const createAttendanceService = async ({
   name,
-  bio,
-  photo,
-  user_id,
   class_id,
-  class_roll,
-  father_name,
-  mother_name,
-  address,
-  phone,
-  religion,
-  birth,
-  gender,
+  student_id,
+  date,
+  status,
 }) => {
-  if ((!name || !user_id || !class_id || !class_roll || !gender, !birth)) {
+  if (!name || !class_id || !student_id || !date || !status) {
     const error = new Error('Invalid Paramiters!');
     error.status = 401;
     throw error;
   }
 
-  const student = new Student({
+  const attendance = new Attendance({
     name,
-    bio,
-    photo,
-    user_id,
     class_id,
-    class_roll,
-    father_name,
-    mother_name,
-    address,
-    phone,
-    religion,
-    birth,
-    gender,
+    student_id,
+    date,
+    status,
   });
 
-  return await student.save();
+  return await attendance.save();
 };
 
-const findAllStudentService = async ({
+const findAllAttendanceService = async ({
   page,
   limit,
   sortType,
@@ -61,83 +45,61 @@ const findAllStudentService = async ({
     .limit(limit);
 };
 
-const removeStudentService = async ({ id }) => {
-  const student = await Student.findById(id);
+const removeAttendanceService = async ({ id }) => {
+  const attendance = await Attendance.findById(id);
 
-  if (!student) {
+  if (!attendance) {
     throw notFoundError();
   }
 
-  return Student.findByIdAndDelete(id);
+  return Attendance.findByIdAndDelete(id);
 };
 
-const studentCountService = ({ search }) => {
+const AttendanceCountService = ({ search }) => {
   const fileter = {
     name: { $regex: search, $options: 'i' },
   };
 
-  return Student.count(fileter);
+  return Attendance.count(fileter);
 };
 
-const findSingleStudentService = async ({ id }) => {
-  const student = await Student.findById(id)
-    .populate({ path: 'user_id' })
-    .populate({ path: 'class_id' });
+const findSingleAttendanceService = async ({ id }) => {
+  const attendance = await Attendance.findById(id)
+    .populate({ path: 'student_id', select: '_id', select: 'name' })
+    .populate({ path: 'class_id', select: '_id', select: 'name' });
 
-  if (!student) {
+  if (!attendance) {
     throw notFoundError();
   }
 
-  return student._doc;
+  return attendance._doc;
 };
 
-const updateStudentPatchService = async (
+const updateAttendanceService = async (
   id,
-  {
-    name,
-    bio,
-    photo,
-    class_id,
-    class_roll,
-    father_name,
-    mother_name,
-    address,
-    phone,
-    religion,
-    birth,
-    gender,
-    enrollment_status,
-  }
+  { name, class_id, student_id, date, status }
 ) => {
-  const student = await Student.findById(id);
+  const attendance = await Attendance.findById(id);
 
-  if (!student) {
+  if (!attendance) {
     throw notFoundError();
   }
 
   const payload = {
     name,
-    bio,
-    photo,
     class_id,
-    class_roll,
-    father_name,
-    mother_name,
-    address,
-    phone,
-    religion,
-    birth,
-    gender,
-    enrollment_status,
+    student_id,
+    date,
+    status,
   };
 
   Object.keys(payload).forEach((key) => {
-    student[key] = payload[key] ?? student[key];
+    attendance[key] = payload[key] ?? attendance[key];
   });
 
-  await student.save();
+  await attendance.save();
 
-  return student._doc;
+  return attendance._doc;
 };
 
 const updateOrCreateStudentService = async (
@@ -209,11 +171,8 @@ const updateOrCreateStudentService = async (
 };
 
 module.exports = {
-  createStudentService,
-  findAllStudentService,
-  studentCountService,
-  removeStudentService,
-  findSingleStudentService,
-  updateStudentPatchService,
-  updateOrCreateStudentService,
+  findSingleAttendanceService,
+  updateAttendanceService,
+  createAttendanceService,
+  removeAttendanceService,
 };

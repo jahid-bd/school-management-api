@@ -4,14 +4,7 @@ const courseSchema = new Schema(
   {
     name: String,
     description: String,
-    teacher_id: {
-      type: Schema.ObjectId,
-      ref: 'Teacher',
-    },
-    class_id: {
-      type: Schema.ObjectId,
-      ref: 'Class',
-    },
+    course_schedule: String,
   },
   { timestamps: true, id: true }
 );

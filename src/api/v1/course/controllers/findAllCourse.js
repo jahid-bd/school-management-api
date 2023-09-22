@@ -1,10 +1,10 @@
 const {
-  findAllStudentService,
-  studentCountService,
-} = require('../../../../lib/student');
+  findAllCourseService,
+  courseCountService,
+} = require('../../../../lib/course');
 const query = require('../../../../utils/query');
 
-const findAllStudent = async (req, res, next) => {
+const findAllCourse = async (req, res, next) => {
   const page = req.query.page || 1;
   const limit = req.query.limit || 10;
   const sortType = req.query.sort_type || 'dsc';
@@ -12,8 +12,7 @@ const findAllStudent = async (req, res, next) => {
   const search = req.query.search || '';
 
   try {
-    // find
-    const students = await findAllStudentService({
+    const data = await findAllCourseService({
       page,
       limit,
       sortType,
@@ -21,24 +20,8 @@ const findAllStudent = async (req, res, next) => {
       search,
     });
 
-    // data transformation
-    const data = query.getTransformedItems({
-      items: students,
-      path: '/students',
-      selection: [
-        '_id',
-        'name',
-        'photo',
-        'user_id',
-        'class_id',
-        'class_roll',
-        'createdAt',
-        'updatedAt',
-      ],
-    });
-
     // pagination
-    const totalItems = await studentCountService({ search });
+    const totalItems = await courseCountService({ search });
     const pagination = query.getPagination({ limit, page, totalItems });
 
     // HEATOAS links
@@ -52,9 +35,9 @@ const findAllStudent = async (req, res, next) => {
     });
 
     res.status(200).json({ data, pagination, links });
-  } catch (err) {
-    next(err);
+  } catch (e) {
+    next(e);
   }
 };
 
-module.exports = findAllStudent;
+module.exports = findAllCourse;
