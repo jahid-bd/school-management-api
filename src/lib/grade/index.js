@@ -41,15 +41,16 @@ const createGradeService = async ({
   return await grade.save();
 };
 
-const findAllAttendanceService = async ({
+const findAllGradeService = async ({
   class_id,
   student_id,
-  date,
+  course_id,
+  grade_date,
   page,
   limit,
   sortType,
   sortBy,
-  search,
+  assessment_type,
 }) => {
   const sortStr = `${sortType === 'dsc' ? '-' : ''}${sortBy}`;
   const filter = {};
@@ -60,79 +61,118 @@ const findAllAttendanceService = async ({
   if (student_id) {
     filter.student_id = student_id;
   }
-  if (date) {
-    filter.date = new Date(date);
+  if (course_id) {
+    filter.course_id = course_id;
+  }
+  if (grade_date) {
+    filter.grade_date = new Date(grade_date);
+  }
+  if (assessment_type) {
+    filter.assessment_type = assessment_type;
   }
 
-  if (search) {
-    filter.name = { $regex: search, $options: 'i' };
-  }
-
-  return Attendance.find(filter)
+  return Grade.find(filter)
     .populate({ path: 'class_id', select: '_id', select: 'name' })
     .populate({ path: 'student_id', select: '_id', select: 'name' })
+    .populate({ path: 'course_id', select: '_id', select: 'name' })
     .sort(sortStr)
     .skip(page * limit - limit)
     .limit(limit);
 };
 
-const removeAttendanceService = async ({ id }) => {
-  const attendance = await Attendance.findById(id);
+const removeGradeService = async ({ id }) => {
+  const grade = await Grade.findById(id);
 
-  if (!attendance) {
+  if (!grade) {
     throw notFoundError();
   }
 
-  return Attendance.findByIdAndDelete(id);
+  return Grade.findByIdAndDelete(id);
 };
 
-const attendanceCountService = ({ search }) => {
-  const fileter = {
-    name: { $regex: search, $options: 'i' },
-  };
+const gradeCountService = (filter) => {
+  const gradeFilter = {};
 
-  return Attendance.count(fileter);
+  if (filter.class_id) {
+    gradeFilter.class_id = filter.class_id;
+  }
+
+  if (filter.student_id) {
+    gradeFilter.student_id = filter.student_id;
+  }
+
+  if (filter.course_id) {
+    gradeFilter.course_id = filter.course_id;
+  }
+
+  if (filter.grade_date) {
+    gradeFilter.grade_date = { $eq: filter.grade_date };
+  }
+
+  if (filter.assessment_type) {
+    gradeFilter.assessment_type = filter.assessment_type;
+  }
+
+  return Grade.count(gradeFilter);
 };
 
-const findSingleAttendanceService = async ({ id }) => {
-  const attendance = await Attendance.findById(id)
+const findSingleGradeService = async ({ id }) => {
+  const grade = await Grade.findById(id)
     .populate({ path: 'student_id', select: '_id', select: 'name' })
-    .populate({ path: 'class_id', select: '_id', select: 'name' });
+    .populate({ path: 'class_id', select: '_id', select: 'name' })
+    .populate({ path: 'course_id', select: '_id', select: 'name' });
 
-  if (!attendance) {
+  if (!grade) {
     throw notFoundError();
   }
 
-  return attendance._doc;
+  return grade._doc;
 };
 
-const updateAttendanceService = async (
+const updateGradeService = async (
   id,
-  { name, class_id, student_id, date, status }
+  {
+    assessment_name,
+    assessment_type,
+    class_id,
+    student_id,
+    course_id,
+    score,
+    max_score,
+    grade_date,
+  }
 ) => {
-  const attendance = await Attendance.findById(id);
+  const grade = await Grade.findById(id);
 
-  if (!attendance) {
+  if (!grade) {
     throw notFoundError();
   }
 
   const payload = {
-    name,
+    assessment_name,
+    assessment_type,
     class_id,
     student_id,
-    date,
-    status,
+    course_id,
+    score,
+    max_score,
+    grade_date,
   };
 
   Object.keys(payload).forEach((key) => {
-    attendance[key] = payload[key] ?? attendance[key];
+    grade[key] = payload[key] ?? grade[key];
   });
 
-  await attendance.save();
+  await grade.save();
 
-  return attendance._doc;
+  return grade._doc;
 };
 
 module.exports = {
   createGradeService,
+  findSingleGradeService,
+  gradeCountService,
+  updateGradeService,
+  removeGradeService,
+  findAllGradeService,
 };

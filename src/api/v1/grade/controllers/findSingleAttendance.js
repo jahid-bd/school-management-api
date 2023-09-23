@@ -1,19 +1,20 @@
 const { findSingleAttendanceService } = require('../../../../lib/attendance');
+const { findSingleGradeService } = require('../../../../lib/grade');
 
-const findSingleAttendance = async (req, res, next) => {
+const findSingleGrade = async (req, res, next) => {
   const id = req.params.id;
 
   try {
-    const attendance = await findSingleAttendanceService({ id });
+    const grade = await findSingleGradeService({ id });
 
     const response = {
       data: {
-        ...attendance,
+        ...grade,
       },
       links: {
         self: req.path,
-        student: `/attendance/${attendance._id}/student`,
-        class: `/attendance/${attendance._id}/class`,
+        student: `/grades/${grade._id}/student`,
+        class: `/grades/${grade._id}/class`,
       },
     };
 
@@ -23,4 +24,4 @@ const findSingleAttendance = async (req, res, next) => {
   }
 };
 
-module.exports = findSingleAttendance;
+module.exports = findSingleGrade;

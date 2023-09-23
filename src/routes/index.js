@@ -8,11 +8,12 @@ const { studentControllers } = require('../api/v1/student');
 const { teacherControllers } = require('../api/v1/teacher');
 const authenticate = require('../middleware/authenticate');
 
-// Auth routes
+// Auth Routes
 router
   .post('/api/v1/auth/register', authController.register)
   .post('/api/v1/auth/login', authController.login);
 
+// Student Routes
 router
   .route('/api/v1/students')
   .get(studentControllers.findAllStudent)
@@ -25,6 +26,7 @@ router
   .patch(studentControllers.updateStudentPatch)
   .delete(studentControllers.removeStudent);
 
+// Teacher Routes
 router
   .route('/api/v1/teachers')
   .post(teacherControllers.createTeacher)
@@ -37,6 +39,7 @@ router
   .patch(teacherControllers.updateTeacherPatch)
   .delete(teacherControllers.removeTeacher);
 
+// Class Routes
 router
   .route('/api/v1/classes')
   .get(classControllers.findAllClass)
@@ -47,6 +50,7 @@ router
   .patch(classControllers.updateClass)
   .delete(classControllers.removeClass);
 
+// Course Routes
 router
   .route('/api/v1/courses')
   .get(courseControllers.findAllCourse)
@@ -57,6 +61,7 @@ router
   .patch(courseControllers.updateCourse)
   .delete(courseControllers.removeCourse);
 
+// Attendance Routes
 router
   .route('/api/v1/attendance')
   .get(attendanceControllers.findAllAttendance)
@@ -68,6 +73,16 @@ router
   .patch(attendanceControllers.updateAttendance)
   .delete(attendanceControllers.removeAttendance);
 
-router.route('/api/v1/grades').post(gradeControllers.createGrade);
+// Grade Routes
+router
+  .route('/api/v1/grades')
+  .get(gradeControllers.findAllGrade)
+  .post(gradeControllers.createGrade);
+
+router
+  .route('/api/v1/grades/:id')
+  .get(gradeControllers.findSingleGrade)
+  .patch(gradeControllers.updateGrade)
+  .delete(gradeControllers.removeGrade);
 
 module.exports = router;

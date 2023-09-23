@@ -1308,14 +1308,19 @@ paths:
       tags: [Grade]
       description: Get Assessment List for a Student
       parameters:
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/sortTypeParam'
+        - $ref: '#/components/parameters/sortByParam'
+        - $ref: '#/components/parameters/assessmentTypeParam'
         - $ref: '#/components/parameters/studentIdParam'
         - $ref: '#/components/parameters/classIdParam'
         - $ref: '#/components/parameters/courseIdParam'
-        - $ref: '#/components/parameters/assessmentTypeParam'
-        - $ref: '#/components/parameters/assessmentNameParam'
-        - $ref: '#/components/parameters/scoreParam'
-        - $ref: '#/components/parameters/maxScoreParam'
         - $ref: '#/components/parameters/gradeDateParam'
+        # - $ref: '#/components/parameters/assessmentNameParam'
+        # - $ref: '#/components/parameters/scoreParam'
+        # - $ref: '#/components/parameters/maxScoreParam'
+
       responses:
         '200':
           description: Success
@@ -1377,7 +1382,7 @@ paths:
                 $ref: '#/components/schemas/Grade'
         '404':
           $ref: '#/components/responses/404'
-    put:
+    patch:
       security:
         - bearerAuth: []
       tags: [Grade]
@@ -2195,19 +2200,17 @@ components:
         message:
           type: string
         grade:
-          $ref: '#/components/schemas/Grade'
+          type: object
+
     GradeUpdateDTO:
       type: object
       properties:
         student_id:
-          type: integer
-          format: int32
+          type: string
         class_id:
-          type: integer
-          format: int32
+          type: string
         course_id:
-          type: integer
-          format: int32
+          type: string
         assessment_type:
           type: string
         assessment_name:
@@ -2222,8 +2225,15 @@ components:
     GradeUpdateResponseDTO:
       type: object
       properties:
+        code:
+          type: number
+          example: 200
         message:
           type: string
+          example: Grade updated successfully
+        data:
+          type: object
+
     Pagination:
       type: object
       properties:
