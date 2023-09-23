@@ -3,7 +3,7 @@ const { generateHash, hashMatched } = require('../../utils/hashing');
 const { generateToken } = require('../token');
 const { userExist, createUser, findUserByEmail } = require('../user');
 
-const register = async ({ name, email, password }) => {
+const register = async ({ name, email, password, status }) => {
   const hasUser = await userExist(email);
 
   if (hasUser) {
@@ -12,7 +12,7 @@ const register = async ({ name, email, password }) => {
 
   password = await generateHash(password);
 
-  const user = await createUser({ name, email, password });
+  const user = await createUser({ name, email, password, status });
 
   return user;
 };

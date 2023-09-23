@@ -5,6 +5,7 @@ const classSchema = new Schema(
     name: String,
     room_number: String,
     class_schedule: String,
+    courses: [{ type: Schema.ObjectId, ref: 'Course' }],
   },
   {
     timeseries: true,

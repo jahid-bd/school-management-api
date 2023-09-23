@@ -22,6 +22,7 @@ const studentSchema = new Schema(
       type: String,
       enum: ['male', 'female', 'others'],
     },
+    courses: [{ type: Schema.ObjectId, ref: 'Course' }],
     father_name: String,
     mother_name: String,
     birth: Date,

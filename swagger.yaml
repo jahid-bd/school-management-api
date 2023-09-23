@@ -1461,6 +1461,9 @@ components:
         email:
           type: string
           example: jahid@gmail.com
+        status:
+          type: string
+          example: pending
         password:
           type: string
           example: pass123
@@ -1468,8 +1471,6 @@ components:
         - name
         - email
         - password
-        - role
-        - status
 
     UserCreateResponseDTO:
       type: object

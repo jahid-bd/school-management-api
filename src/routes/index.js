@@ -6,12 +6,25 @@ const { courseControllers } = require('../api/v1/course');
 const { gradeControllers } = require('../api/v1/grade');
 const { studentControllers } = require('../api/v1/student');
 const { teacherControllers } = require('../api/v1/teacher');
+const { userControllers } = require('../api/v1/user');
 const authenticate = require('../middleware/authenticate');
 
 // Auth Routes
 router
   .post('/api/v1/auth/register', authController.register)
   .post('/api/v1/auth/login', authController.login);
+
+// User Routes
+router
+  .route('/api/v1/users')
+  .get(userControllers.findAllUser)
+  .post(userControllers.createUser);
+
+router
+  .route('/api/v1/users/:id')
+  .get(userControllers.findSingleUser)
+  .patch(userControllers.updateUser)
+  .delete(userControllers.removeUser);
 
 // Student Routes
 router
