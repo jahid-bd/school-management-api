@@ -14,6 +14,8 @@ const authenticate = async (req, _res, next) => {
       next(authenticatonError(`Your account status is ${user.status}`));
     }
 
+    req.user = { ...user._doc, id: user.id };
+
     return next();
   } catch (e) {
     next(authenticatonError());
