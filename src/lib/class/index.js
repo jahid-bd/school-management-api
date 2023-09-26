@@ -1,4 +1,5 @@
 const { Class } = require('../../model');
+const { notFoundError } = require('../../utils/error');
 
 const createClassService = async ({ name, room_number, class_schedule }) => {
   if (!name || !room_number || !class_schedule) {
@@ -63,7 +64,7 @@ const updateClassService = async (
   return classData._doc;
 };
 
-const removeclassService = async ({ id }) => {
+const removeClassService = async ({ id }) => {
   const classData = await Class.findById(id);
 
   if (!classData) {
@@ -73,10 +74,16 @@ const removeclassService = async ({ id }) => {
   return Class.findByIdAndDelete(id);
 };
 
+const findClassById = async (id) => {
+  const hasClass = await Class.findById(id);
+  return hasClass ? hasClass : false;
+};
+
 module.exports = {
   createClassService,
   findAllClassService,
   classCountService,
   updateClassService,
-  removeclassService,
+  removeClassService,
+  findClassById,
 };

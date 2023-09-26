@@ -351,13 +351,18 @@ paths:
                   example: https://s3.aws.example.com/23nds
                 user_id:
                   type: string
-                  example: 11
+                  example: 650c655889360b03dae6e5c4
                 class_id:
                   type: string
-                  example: 7
+                  example: 650c655889360b03dae6e5c4
                 class_roll:
                   type: string
-                  example: 5
+                  example: 10
+                courses:
+                  type: array
+                  items:
+                    type: string
+                    example: 650c655889360b03dae6e5c4
                 father_name:
                   type: string
                   example: Amzad Hossen
@@ -1544,6 +1549,11 @@ components:
             class_id:
               type: string
               example: 7
+            courses:
+              type: array
+              items:
+                type: string
+                example: 650c655889360b03dae6e5c4
             class_roll:
               type: string
               example: 5

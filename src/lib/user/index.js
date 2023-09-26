@@ -6,6 +6,11 @@ const findUserByEmail = async (email) => {
   return user ? user : false;
 };
 
+const findUserById = async (id) => {
+  const user = await User.findById(id);
+  return user ? user : false;
+};
+
 const userExist = async (email) => {
   const user = await findUserByEmail(email);
   return user ? true : false;
@@ -99,4 +104,5 @@ module.exports = {
   findSingleUserService,
   removeUserService,
   updateUserService,
+  findUserById,
 };

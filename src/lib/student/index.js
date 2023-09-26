@@ -1,5 +1,6 @@
 const { Student } = require('../../model');
-const { notFoundError } = require('../../utils/error');
+const { notFoundError, badRequest } = require('../../utils/error');
+const refIdValidation = require('../../utils/refIdValidation');
 
 const createStudentService = async ({
   name,
@@ -15,12 +16,23 @@ const createStudentService = async ({
   religion,
   birth,
   gender,
+  courses,
 }) => {
   if ((!name || !user_id || !class_id || !class_roll || !gender, !birth)) {
     const error = new Error('Invalid Paramiters!');
     error.status = 401;
     throw error;
   }
+
+  await refIdValidation('user', user_id);
+
+  await refIdValidation('class', class_id);
+
+  const validationPromises = courses.map(async (id) => {
+    await refIdValidation('course', id);
+  });
+
+  await Promise.all(validationPromises);
 
   const student = new Student({
     name,
@@ -36,6 +48,7 @@ const createStudentService = async ({
     religion,
     birth,
     gender,
+    courses,
   });
 
   return await student.save();
@@ -82,7 +95,8 @@ const studentCountService = ({ search }) => {
 const findSingleStudentService = async ({ id }) => {
   const student = await Student.findById(id)
     .populate({ path: 'user_id' })
-    .populate({ path: 'class_id' });
+    .populate({ path: 'class_id' })
+    .populate({ path: 'courses' });
 
   if (!student) {
     throw notFoundError();

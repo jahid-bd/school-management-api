@@ -15,6 +15,7 @@ const createStudent = async (req, res, next) => {
     religion,
     birth,
     gender,
+    courses,
   } = req.body;
 
   try {
@@ -32,6 +33,7 @@ const createStudent = async (req, res, next) => {
       religion,
       birth,
       gender,
+      courses,
     });
 
     const response = {
