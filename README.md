@@ -46,6 +46,32 @@ To set up the SMS project locally, follow these steps:
 
    ```bash
    git clone https://github.com/jahid-bd/school-management-api.git
+
+2. Install dependencies:
+   
+   ```bash
+   bashCopy code
+   cd school-management-system
+   npm install
+   ```
+3. Set up the environment variables:
+   Create a **`.env`** file in the project root and configure the following variables:
+   PORT=400	
+   DB_URL = 'db/data.json'
+   DB_USERNAME='db-username'
+   DB_PASSWORD='db-password'
+   DB_CONNECTION_URL='mongodb://<username>:<password>@localhost:27017'
+   DB_NAME = 'db-name'
+   ACCESS_TOKEN_SECRET='access-token-secret'
+   
+5. Start the server
+
+   ```bash
+   npm run dev
+   ```
+   The SMS API server should now be running locally on port 4000.
+
+# Api Endpoints
    
 ### User Management (Auth)
 
@@ -115,3 +141,9 @@ The SMS project uses MongoDB with the following database models:
 - Attendance
 - Assessment
 - Class Schedule
+
+# Contributing
+Contributions to the SMS project are welcome! If you have any feature requests, bug reports, or suggestions, please open an issue or create a pull request.
+
+# License
+This project is licensed under the MIT License.
