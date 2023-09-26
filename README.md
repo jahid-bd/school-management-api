@@ -55,6 +55,7 @@ To set up the SMS project locally, follow these steps:
    ```
 3. Set up the environment variables:
    Create a **`.env`** file in the project root and configure the following variables:
+   ```bash
    PORT=400	
    DB_URL = 'db/data.json'
    DB_USERNAME='db-username'
@@ -62,6 +63,7 @@ To set up the SMS project locally, follow these steps:
    DB_CONNECTION_URL='mongodb://<username>:<password>@localhost:27017'
    DB_NAME = 'db-name'
    ACCESS_TOKEN_SECRET='access-token-secret'
+   ```
    
 5. Start the server
 
