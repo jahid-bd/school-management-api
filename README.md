@@ -33,7 +33,6 @@ The School Management System (SMS) is a comprehensive software solution designed
 - MongoDB
 - Mongoose
 - JSON Web Tokens (JWT)
-- Passport.js
 - Bcrypt.js
 - Swagger (API Documentation)
 - Git & GitHub for Version Control
