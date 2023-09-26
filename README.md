@@ -9,6 +9,7 @@ The School Management System (SMS) is a comprehensive software solution designed
 - [Getting Started](#getting-started)
 - [API Endpoints](#api-endpoints)
 - [Database Models](#database-models)
+- [ER Diagram](#er-diagram)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -142,6 +143,9 @@ The SMS project uses MongoDB with the following database models:
 - Attendance
 - Assessment
 - Class Schedule
+
+# ER Diagram
+https://drive.google.com/file/d/1IuoyKls2ucoBcnk_sZe9BLxmWHSrMxEX/view?usp=sharing
 
 # Contributing
 Contributions to the SMS project are welcome! If you have any feature requests, bug reports, or suggestions, please open an issue or create a pull request.
